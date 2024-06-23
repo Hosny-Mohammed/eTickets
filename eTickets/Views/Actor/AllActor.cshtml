@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actor List</title>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Actor List</h2>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Profile Pic</th>
+                    <th>Name</th>
+                    <th>Biography</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Actor actor in Model)
+                {
+                    <tr>
+                        <td>@actor.ActorId</td>
+                        <td><img src="@actor.ProfilePicURL" class="img-fluid rounded" alt="Profile Pic" style="max-width: 100px;" /></td>
+                        <td>@actor.Name</td>
+                        <td>@actor.Biography</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
