@@ -19,5 +19,14 @@ namespace eTickets.Controllers
             var actors = _context.Actors.ToList();
             return View(actors);
         }
+        public IActionResult ActorDetails(int id)
+        {
+            id = 1;
+            var actor = _context.Actors.FirstOrDefault(a => a.ActorId == id);
+            if (actor == null)
+                return View("Not Found");
+            return View(actor); 
+        }
+        
     }
-}
+}  
