@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@Model IEnumerable<Actor>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,16 +17,19 @@
                     <th>Profile Pic</th>
                     <th>Name</th>
                     <th>Biography</th>
+                    <th>Details</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var actor in Model)
+                @foreach (Actor actor in Model)
                 {
                     <tr>
                         <td>@actor.ActorId</td>
                         <td><img src="@actor.ProfilePicURL" class="img-fluid rounded" alt="Profile Pic" style="max-width: 100px;" /></td>
                         <td>@actor.Name</td>
                         <td>@actor.Biography</td>
+                        <td><a asp-action="ActorDetails" asp-route-id="@actor.ActorId">Details</a></td>
+                         <td><a asp-action="ActorEdit" asp-route-id="@actor.ActorId">Edit</a></td>
                     </tr>
                 }
             </tbody>
@@ -34,38 +38,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

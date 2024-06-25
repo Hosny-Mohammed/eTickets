@@ -1,4 +1,5 @@
 ﻿using eTickets.Data;
+using eTickets.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eTickets.Controllers
@@ -21,12 +22,29 @@ namespace eTickets.Controllers
         }
         public IActionResult ActorDetails(int id)
         {
-            id = 1;
             var actor = _context.Actors.FirstOrDefault(a => a.ActorId == id);
             if (actor == null)
                 return View("Not Found");
-            return View(actor); 
+            return View(actor);
         }
-        
+        [HttpGet]
+        public IActionResult ActorEdit(int id)
+        {
+            var actor = _context.Actors.FirstOrDefault(a => a.ActorId == id);
+            if (actor == null)
+                return View("Not Found");
+            return View(actor);
+        }
+        [HttpPost]
+        public IActionResult ActorEdit(Actor actor)
+        {
+            if (!ModelState.IsValid) 
+            {
+                _context.Actors.Update(actor);
+                _context.SaveChanges();
+                return RedirectToAction("AllActor");
+            }
+            return View("Data's Not Valid");
+        }
     }
 }  
