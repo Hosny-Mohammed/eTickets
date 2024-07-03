@@ -1,50 +1,69 @@
 ﻿using eTickets.Data;
 using eTickets.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using eTickets.Data.Services;
 namespace eTickets.Controllers
 {
     public class ActorController : Controller
     {
-        public readonly AppDbContext _context;
-        public ActorController(AppDbContext context)
+        private readonly IActorsService service;
+        public ActorController(IActorsService _service)
         {
-            _context = context;
+            service = _service; 
         }
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult AllActor() 
+        public async Task<IActionResult> AllActor() 
         {
-            var actors = _context.Actors.ToList();
+            var actors = await service.GetAll();
             return View(actors);
         }
         public IActionResult ActorDetails(int id)
         {
-            var actor = _context.Actors.FirstOrDefault(a => a.ActorId == id);
+            var actor = service.GetById(id);
             if (actor == null)
-                return View("Not Found");
+                return View("NotFound");
             return View(actor);
         }
         [HttpGet]
         public IActionResult ActorEdit(int id)
         {
-            var actor = _context.Actors.FirstOrDefault(a => a.ActorId == id);
+            var actor = service.GetById(id);
             if (actor == null)
-                return View("Not Found");
+                return View("NotFound");
             return View(actor);
         }
         [HttpPost]
         public IActionResult ActorEdit(Actor actor)
         {
-            if (!ModelState.IsValid) 
+
+            if (ModelState.IsValid) 
             {
-                _context.Actors.Update(actor);
-                _context.SaveChanges();
+                service.Update(actor);
                 return RedirectToAction("AllActor");
             }
-            return View("Data's Not Valid");
+            return View("NotFound");
         }
+        public IActionResult RemoveActor(int id) 
+        {
+            var Actor = service.Delete(id);
+            if (!Actor)
+                return View("NotFound");
+            return RedirectToAction("AllActor");
+        }
+        public IActionResult RedirectToAddActor()
+        {
+            return View("AddActor");
+        }
+        public IActionResult AddActor(Actor actor)
+        {
+            if (!ModelState.IsValid)
+                return View("NotFound");
+            service.Add(actor);
+            return RedirectToAction("AllActor");
+        }
+        
     }
 }  
